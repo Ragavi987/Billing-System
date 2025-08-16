@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<h2>Billing Page</h2>
+<p><strong>Customer Email:</strong> {{ purchase.customer.email }}</p>
+
+<table>
+    <tr>
+        <th>Product ID</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Purchase Price</th>
+        <th>Tax % for Item</th>
+        <th>Tax Payable for Item</th>
+        <th>Total Price of Item</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.product.name}}-{{ item.product.product_id }}</td>
+        <td>{{ item.price_at_purchase }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.subtotal_without_tax|floatformat:2 }}</td>
+        <td>{{ item.tax_at_purchase }}</td>
+        <td>{{ item.tax_amount|floatformat:2 }}</td>
+        <td>{{ item.subtotal_with_tax|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p><strong>Total price without tax:</strong> {{ total_without_tax|floatformat:2 }}</p>
+<p><strong>Total tax payable:</strong> {{ total_tax|floatformat:2 }}</p>
+<p><strong>Net price of the purchased items:</strong> {{ purchase.total_amount|floatformat:2 }}</p>
+<p><strong>Rounded down value of purchased items net price:</strong> {{ rounded_total }}</p>
+<p><strong>Balance payable to the customer:</strong> {{ balance }}</p>
+
+<h3>Balance Denomination:</h3>
+<ul>
+    {% for denom, count in change_distribution.items %}
+        <li>{{ denom }}: {{ count }}</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

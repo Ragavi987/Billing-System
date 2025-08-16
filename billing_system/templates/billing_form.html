@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; }
+        table td { padding: 5px; }
+        input, button { padding: 5px; }
+        .btn { cursor: pointer; }
+        .btn-add { background-color: #ccc; }
+        .btn-generate { background-color: green; color: white; }
+        .btn-cancel { background-color: #ccc; }
+        hr { margin: 20px 0; }
+    </style>
+    <script>
+        function addRow() {
+            const table = document.getElementById('bill-section');
+            const row = table.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            let productOptions = `<option value="" selected disabled>Select Product</option>`;
+            {% for p in product_qs %}
+                productOptions += `<option value="{{ p.product_id }}">{{ p.name }}</option>`;
+            {% endfor %}
+
+            cell1.innerHTML = `<select name="product_id" required>${productOptions}</select>`;
+            cell2.innerHTML = '<input type="number" name="quantity" placeholder="Quantity" min="1" required>';
+        }
+    </script>
+</head>
+<body>
+
+<h2>Billing Page</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <div>
+        <label>Customer Email</label>
+        <input type="email" name="customer_email" required>
+    </div>
+
+    <h3>Bill section</h3>
+    <div style="margin-left:17%"> <button type="button" class="btn btn-add" onclick="addRow()">+ Add New</button></div>
+
+    <table id="bill-section">
+        <tr>
+          <td><select name="product_id" required>
+                <option value="" selected disabled>Select Product</option>
+                {% for p in product_qs %}
+                    <option value="{{ p.product_id }}">{{ p.name }}</option>
+                {% endfor %}
+            </select></td>
+            <td><input type="number" name="quantity" placeholder="Quantity" min="1" required></td>
+        </tr>
+    </table>
+
+
+    <hr>
+
+    <h3>Denominations</h3>
+    <table>
+        {% for d in DENOMINATIONS %}
+        <tr>
+            <td>{{ d }}</td>
+            <td><input type="number" name="denomination_{{ d }}" value="0" min="0"></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div>
+        <label>Cash paid by customer</label>
+        <input type="number" name="paid_amount" step="0.01" required>
+    </div>
+
+    <br>
+    <button type="button" class="btn btn-cancel">Cancel</button>
+    <button type="submit" class="btn btn-generate">Generate Bill</button>
+</form>
+
+</body>
+</html>
