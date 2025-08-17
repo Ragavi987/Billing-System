@@ -1,9 +1,13 @@
 Super User Credential:
+
 user name : ragavi
+
 email : ragavim@gmail.com
+
 password : admin123
 
-Project Structure
+Project Structure:
+
 
 billing_system/                   <-- Project Root
 │
