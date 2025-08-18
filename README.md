@@ -6,7 +6,7 @@ email : ragavim@gmail.com
 
 password : admin123
 
-This is a Billing System developed using Django Framework. Created CRUD operations for add and update the user information.
+This is a Billing System developed using Python with Django Framework. Created CRUD operations for add and update the user information. User information stored in SQLITE DB.
 
 Getting Started
 
